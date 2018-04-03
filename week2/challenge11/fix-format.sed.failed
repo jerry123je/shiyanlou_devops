@@ -1,0 +1,8 @@
+#!/bin/sed -f
+
+:x
+N
+s/\n\(\[picture.*[png|jpg]\)/\n!\1/g
+s/\n\{3,\}/\n/g
+bx
+

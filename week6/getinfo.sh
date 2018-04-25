@@ -2,28 +2,30 @@
 
 disk_usage=`df -h|grep '/$'|awk '{print $5}'|cut -d% -f1`
 
-if [[ "$disk_usage -gt 85" ]];then
-    echo "need notice, use: $disk_usage%"
+if [[ "$disk_usage" > "85" ]];then
+    echo -e "Disk-Root: \tneed notice, use: $disk_usage%"
 else
-    echo "is OK, use: $disk_usage%"
+    echo -e "Disk-Root: \tis OK, use: $disk_usage%"
 fi
 
 total_mem=`free -m|grep '^Mem'|awk '{print $2}'`
 used_mem=`free -m|grep '^-/+'|awk '{print $3}'`
 mem_prec=`expr "scale=1; $used_mem / $total_mem * 100"|bc`
 
-if [[ "$mem_prec -gt 90" ]];then
-    echo "need notice, use: $mem_prec%"
+if [[ "$mem_prec" > "90" ]];then
+    echo -e "Memory: \tneed notice, use: $mem_prec%"
 else
-    echo "is OK, use: $mem_prec%"
+    echo -e "Memory: \tis OK, use: $mem_prec%"
 fi
 
-aver_load=`uptime|awk -F"[:,]" '{print $8}'`
+cpu_count=`grep 'model name' /proc/cpuinfo|uniq -c|awk '{print $1}'`
+total_load=`uptime|awk -F"[:,]" '{print $8}'`
+aver_load=`expr "scale=2; $total_load / $cpu_count"|bc`
 
-if [[ "$aver_load -gt 0.7" ]];then
-    echo "need notice, use: $aver_load"
+if [[ "$aver_load" > "0.7" ]];then
+    echo -e "Loadaverage: \tneed notice, use: $aver_load"
 else
-    echo "is OK, use: $aver_load"
+    echo -e "Loadaverage: \tis OK, use: $aver_load"
 fi
 
 

@@ -9,8 +9,9 @@ else
 fi
 
 total_mem=`free -m|grep '^Mem'|awk '{print $2}'`
+#used_mem=`free -m|grep '^Mem'|awk '{print $3}'`
 used_mem=`free -m|grep '^-/+'|awk '{print $3}'`
-mem_prec=$(printf "%.1f" `expr "scale=1; $used_mem / $total_mem * 100"|bc`)
+mem_prec=$(printf "%.1f" `expr "scale=3; $used_mem / $total_mem * 100"|bc`)
 
 if [[ "$mem_prec" > "90" ]];then
     echo -e "Memory: \tneed notice, use: $mem_prec%"
